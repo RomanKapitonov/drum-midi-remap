@@ -96,6 +96,18 @@ mod tests {
     }
 
     #[test]
+    fn ggd_cymbal_ranges_have_no_gaps() {
+        let b = BuiltinMaps::new();
+        let ggd = b.get("ggd_invasion").unwrap();
+        // every note across the cymbal/stack blocks decodes to something
+        for note in [53u8, 54, 55, 57, 58, 59, 66, 67, 68, 74, 75, 76, 79, 80] {
+            assert!(ggd.decode(note).is_some(), "GGD note {note} should map");
+        }
+        assert_eq!(ggd.decode(54), Some(crate::canon::Canon::CrashChoke));
+        assert_eq!(ggd.decode(67), Some(crate::canon::Canon::CrashChoke));
+    }
+
+    #[test]
     fn addictive_drums2_native_layout() {
         let b = BuiltinMaps::new();
         let ad2 = b.get("addictive_drums2").unwrap();
