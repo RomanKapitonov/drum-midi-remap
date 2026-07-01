@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { CardDropzone } from "./components/CardDropzone";
 import { ConvertButton } from "./components/ConvertButton";
 import { EditView } from "./components/EditView";
-import { FileRow } from "./components/FileRow";
+import { FileChips } from "./components/FileChips";
 import { LibraryList } from "./components/LibraryList";
 import { OctaveToggle } from "./components/OctaveToggle";
 import { SummaryRow } from "./components/SummaryRow";
@@ -52,12 +52,16 @@ export default function App() {
     );
   }
 
-  const summary = `${c.remappedCount} remapped · ${c.voiceCount - c.remappedCount} kept → ${c.tgt}`;
   const bothSelected = c.src !== "" && c.tgt !== "";
+  const targetShort = c.tgt.toUpperCase().slice(0, 3);
+  const failedSuffix = c.failures.length > 0 ? ` · ${c.failures.length} failed` : "";
+  const summary = `${c.results.length} file${
+    c.results.length === 1 ? "" : "s"
+  } · ${c.remappedCount} remapped → ${c.tgt}${failedSuffix}`;
 
   return (
     <Card>
-      <CardDropzone onFile={c.setFile}>
+      <CardDropzone onFiles={c.addFiles}>
         <div className="flex flex-col gap-7 p-[34px_34px_30px]">
           <div className="flex items-baseline justify-between">
           <span className="
@@ -70,7 +74,13 @@ export default function App() {
           </span>
         </div>
 
-        <FileRow file={c.file} onFile={c.setFile} onReplace={c.replaceFile} />
+        <FileChips
+          files={c.files}
+          failures={c.failures}
+          onFiles={c.addFiles}
+          onRemove={c.removeFile}
+          onClear={c.clearFiles}
+        />
 
         <div className="grid grid-cols-2 gap-5.5">
           <LibraryList
@@ -104,9 +114,9 @@ export default function App() {
 
         <ConvertButton
           conv={c.conv}
-          canConvert={c.file !== null && bothSelected}
-          downloadUrl={c.result?.url ?? null}
-          downloadName={c.result?.name ?? ""}
+          canConvert={c.files.length > 0 && bothSelected}
+          results={c.results}
+          targetShort={targetShort}
           summary={summary}
           onConvert={c.convert}
           onReset={c.reset}

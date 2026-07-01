@@ -1,9 +1,21 @@
-import initWasm, { engine_catalog, plan as wasmPlan, remap as wasmRemap } from '@wasm';
+import initWasm, {
+  engine_catalog,
+  engine_drums,
+  plan as wasmPlan,
+  remap as wasmRemap,
+} from '@wasm';
 import type { Overrides } from './overrides';
 
 export interface Engine {
   id: string;
   name: string;
+}
+
+export interface Drum {
+  note: number;
+  canon: string;
+  label: string;
+  family: string;
 }
 export type VoiceStatus = 'direct' | 'fallback' | 'dropped';
 export interface VoiceRow {
@@ -43,6 +55,10 @@ export function ready(): Promise<void> {
 
 export function engines(): Engine[] {
   return engine_catalog() as Engine[];
+}
+
+export function engineDrums(tgtId: string): Drum[] {
+  return engine_drums(tgtId) as Drum[];
 }
 
 export function plan(src: string, tgt: string, ov?: Overrides): VoiceRow[] {

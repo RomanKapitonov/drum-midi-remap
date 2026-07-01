@@ -1,32 +1,35 @@
+import { zipFiles } from '../lib/zip';
+
 type Conv = 'idle' | 'running' | 'done' | 'error';
 
 export function ConvertButton({
   conv,
   canConvert,
-  downloadUrl,
-  downloadName,
+  results,
+  targetShort,
   summary,
   onConvert,
   onReset,
 }: {
   conv: Conv;
   canConvert: boolean;
-  downloadUrl: string | null;
-  downloadName: string;
+  results: { name: string; url: string; bytes: Uint8Array }[];
+  targetShort: string;
   summary: string;
   onConvert: () => void;
   onReset: () => void;
 }) {
-  if (conv === 'done' && downloadUrl) {
+  if (conv === 'done' && results.length > 0) {
+    const single = results.length === 1;
+    const href = single ? results[0].url : URL.createObjectURL(zipFiles(results));
+    const name = single ? results[0].name : `remapped-${targetShort}.zip`;
     return (
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-0.75">
-          <a
-            href={downloadUrl}
-            download={downloadName}
-            className="text-[13.5px] font-semibold text-t1"
-          >
-            ↓ download .mid
+          <a href={href} download={name} className="
+            text-[13.5px] font-semibold text-t1
+          ">
+            {single ? '↓ download .mid' : '↓ download all (.zip)'}
           </a>
           <span className="font-mono text-[11px] text-t4">{summary}</span>
         </div>

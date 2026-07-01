@@ -9,6 +9,17 @@ export function engine_catalog(): unknown {
   ];
 }
 
+export function engine_drums(_tgt: string): unknown {
+  return [
+    { note: 36, canon: 'kick.main', label: 'Kick', family: 'Kick' },
+    { note: 38, canon: 'snare1.hit', label: 'Snare', family: 'Snare' },
+    { note: 37, canon: 'snare1.sidestick', label: 'Side Stick', family: 'Snare' },
+    { note: 48, canon: 'tom.rack1.hit', label: 'Rack Tom 1', family: 'Toms' },
+    { note: 42, canon: 'hat.closed', label: 'Hi-Hat Closed', family: 'Hi-Hat' },
+    { note: 49, canon: 'crash.1.hit', label: 'Crash 1', family: 'Cymbals' },
+  ];
+}
+
 const BASE_ROWS = [
   { canon: 'kick.main', label: 'Kick', src_note: 24, tgt_note: 36, status: 'direct' },
   { canon: 'snare1.hit', label: 'Snare', src_note: 26, tgt_note: 38, status: 'direct' },

@@ -33,11 +33,13 @@ export function EditView({ c }: { c: ReturnType<typeof useRemapper> }) {
             row={row}
             effectiveTgt={effectiveTgt(row, c.edits)}
             base={c.oct}
+            drums={c.targetDrums}
             expanded={c.pick?.canon === row.canon}
             pickOctIndex={c.pick?.canon === row.canon ? c.pick.octIndex : 0}
             onOpen={() => c.openPick(row.canon)}
             onSetOct={c.setPickOct}
             onPick={c.chooseNote}
+            onPickDrum={c.chooseNoteAbsolute}
             onClose={c.closePick}
           />
         ))}

@@ -1,7 +1,9 @@
-import { useRef } from 'react';
-import { useDismiss } from '../hooks/useDismiss';
-import { noteName, octaveTabLabel, type OctaveBase } from '../lib/notes';
-import { PianoKeyboard } from './PianoKeyboard';
+import { useRef } from "react";
+import { useDismiss } from "../hooks/useDismiss";
+import type { Drum } from "../lib/midiremap";
+import { noteName, octaveTabLabel, type OctaveBase } from "../lib/notes";
+import { DrumList } from "./DrumList";
+import { PianoKeyboard } from "./PianoKeyboard";
 
 const OCT_INDICES = [-1, 0, 1, 2, 3, 4, 5, 6, 7];
 
@@ -10,16 +12,20 @@ export function NotePicker({
   currentNote,
   octIndex,
   base,
+  drums,
   onSetOct,
   onPick,
+  onPickDrum,
   onClose,
 }: {
   voiceLabel: string;
   currentNote: number;
   octIndex: number;
   base: OctaveBase;
+  drums: Drum[];
   onSetOct: (octIndex: number) => void;
   onPick: (semitone: number) => void;
+  onPickDrum: (note: number) => void;
   onClose: () => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -52,27 +58,43 @@ export function NotePicker({
           ×
         </button>
       </div>
-      <div className="flex flex-wrap gap-1.5 pb-3.25">
-        {OCT_INDICES.map((o) => (
-          <button
-            key={o}
-            type="button"
-            onClick={() => onSetOct(o)}
-            className={`
-              rounded-md border px-2.75 py-1.25 font-mono text-[11px]
-              font-semibold
-              ${
-              o === octIndex ? 'border-accent bg-accent/15 text-t1' : `
-                border-white/8 text-t4
-              `
-            }
-            `}
-          >
-            {octaveTabLabel(o, base)}
-          </button>
-        ))}
+      <div className="flex gap-4">
+        <div className="min-w-0 flex-1">
+          <DrumList
+            drums={drums}
+            currentNote={currentNote}
+            base={base}
+            onPick={onPickDrum}
+          />
+        </div>
+        <div className="flex w-105 shrink-0 flex-col gap-3.25">
+          <div className="flex flex-wrap justify-end gap-1.5">
+            {OCT_INDICES.map((o) => (
+              <button
+                key={o}
+                type="button"
+                onClick={() => onSetOct(o)}
+                className={`
+                  rounded-md border px-2.75 py-1.25 font-mono text-[11px]
+                  font-semibold
+                  ${
+                    o === octIndex
+                      ? "border-accent bg-accent/15 text-t1"
+                      : `border-white/8 text-t4`
+                  }
+                `}
+              >
+                {octaveTabLabel(o, base)}
+              </button>
+            ))}
+          </div>
+          <PianoKeyboard
+            octIndex={octIndex}
+            currentNote={currentNote}
+            onPick={onPick}
+          />
+        </div>
       </div>
-      <PianoKeyboard octIndex={octIndex} currentNote={currentNote} onPick={onPick} />
     </div>
   );
 }

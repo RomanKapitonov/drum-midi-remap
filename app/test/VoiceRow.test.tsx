@@ -5,11 +5,13 @@ import { VoiceRow } from '../src/components/VoiceRow';
 
 const base = {
   base: 'c1' as const,
+  drums: [],
   expanded: false,
   pickOctIndex: 3,
   onOpen: () => {},
   onSetOct: () => {},
   onPick: () => {},
+  onPickDrum: () => {},
   onClose: () => {},
 };
 

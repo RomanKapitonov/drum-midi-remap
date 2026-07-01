@@ -27,7 +27,7 @@ export function PianoKeyboard({
   onPick: (semitone: number) => void;
 }) {
   return (
-    <div className="relative flex">
+    <div className="relative flex w-full">
       {WHITE.map((w) => {
         const active = noteInOctave(octIndex, w.s) === currentNote;
         return (
@@ -41,7 +41,10 @@ export function PianoKeyboard({
               border-t-0 border-keyborder pb-1.75 font-mono text-[10px] text-ink
               ${
               active
-                ? "bg-accent shadow-[inset_0_0_0_2px_#8c8473]"
+                ? `
+                  bg-accent
+                  shadow-[0_0_10px_rgba(199,192,173,0.45),inset_0_0_0_2px_#8c8473]
+                `
                 : "bg-keywhite"
             }
             `}
@@ -66,8 +69,8 @@ export function PianoKeyboard({
               border-black
               ${
               active
-                ? "bg-accent shadow-[0_0_9px_rgba(199,192,173,.7)]"
-                : "bg-keyblack"
+                ? "bg-keyactive shadow-[0_0_10px_rgba(199,192,173,0.45)]"
+                : "bg-keyblack shadow-[0_2px_3px_rgba(0,0,0,0.5)]"
             }
             `}
           />

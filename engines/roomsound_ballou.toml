@@ -1,5 +1,5 @@
 id = "roomsound_ballou"
-name = "Room Sound â€“ Kurt Ballou"
+name = "Room Sound - Kurt Ballou"
 notes = [
   { note = 31, canon = "perc.sticks", primary = true },
   { note = 35, canon = "snare1.flam", primary = true },

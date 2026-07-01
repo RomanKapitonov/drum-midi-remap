@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
+  engineDrums,
   engines as listEngines,
   plan as computePlan,
   ready,
   remap,
+  type Drum,
   type Engine,
   type RemapReport,
   type VoiceRow,
@@ -21,10 +23,16 @@ type Conv = 'idle' | 'running' | 'done' | 'error';
 type View = 'convert' | 'edit';
 type Oct = 'c1' | 'c2';
 
-interface Result {
-  url: string;
+export interface FileResult {
   name: string;
+  url: string;
+  bytes: Uint8Array;
   report: RemapReport;
+}
+
+export interface FileFailure {
+  name: string;
+  error: string;
 }
 
 function baseName(name: string): string {
@@ -38,19 +46,21 @@ export function useRemapper() {
   const [src, setSrc] = useState('');
   const [tgt, setTgt] = useState('');
   const [oct, setOct] = useState<Oct>('c1');
-  const [file, setFileState] = useState<LoadedFile | null>(null);
+  const [files, setFiles] = useState<LoadedFile[]>([]);
   const [view, setView] = useState<View>('convert');
   const [conv, setConv] = useState<Conv>('idle');
-  const [result, setResultState] = useState<Result | null>(null);
+  const [results, setResults] = useState<FileResult[]>([]);
+  const [failures, setFailures] = useState<FileFailure[]>([]);
   const [rows, setRows] = useState<VoiceRow[]>([]);
   const [edits, setEdits] = useState<Edits>({});
   const [pick, setPick] = useState<{ canon: string; octIndex: number } | null>(null);
 
-  const clearResult = useCallback(() => {
-    setResultState((r) => {
-      if (r) URL.revokeObjectURL(r.url);
-      return null;
+  const clearResults = useCallback(() => {
+    setResults((rs) => {
+      rs.forEach((r) => URL.revokeObjectURL(r.url));
+      return [];
     });
+    setFailures([]);
   }, []);
 
   const refreshPlan = useCallback((s: string, t: string) => {
@@ -78,84 +88,104 @@ export function useRemapper() {
 
   useEffect(() => {
     return () => {
-      setResultState((r) => {
-        if (r) URL.revokeObjectURL(r.url);
-        return r;
+      setResults((rs) => {
+        rs.forEach((r) => URL.revokeObjectURL(r.url));
+        return rs;
       });
     };
   }, []);
 
   const chooseSrc = useCallback(
     (id: string) => {
-      clearResult();
+      clearResults();
       setConv('idle');
       setEdits({});
       setPick(null);
       setSrc(id);
       refreshPlan(id, tgt);
     },
-    [clearResult, refreshPlan, tgt],
+    [clearResults, refreshPlan, tgt],
   );
 
   const chooseTgt = useCallback(
     (id: string) => {
-      clearResult();
+      clearResults();
       setConv('idle');
       setEdits({});
       setPick(null);
       setTgt(id);
       refreshPlan(src, id);
     },
-    [clearResult, refreshPlan, src],
+    [clearResults, refreshPlan, src],
   );
 
   const swap = useCallback(() => {
-    clearResult();
+    clearResults();
     setConv('idle');
     setEdits({});
     setPick(null);
     setSrc(tgt);
     setTgt(src);
     refreshPlan(tgt, src);
-  }, [clearResult, refreshPlan, src, tgt]);
+  }, [clearResults, refreshPlan, src, tgt]);
 
   const toggleOct = useCallback(() => setOct((o) => (o === 'c1' ? 'c2' : 'c1')), []);
 
-  const setFile = useCallback(
-    (f: LoadedFile) => {
-      clearResult();
+  const addFiles = useCallback(
+    (incoming: LoadedFile[]) => {
+      clearResults();
       setError(null);
       setConv('idle');
-      setFileState(f);
+      setFiles((prev) => {
+        const names = new Set(prev.map((f) => f.name));
+        return [...prev, ...incoming.filter((f) => !names.has(f.name))];
+      });
     },
-    [clearResult],
+    [clearResults],
   );
 
-  const replaceFile = useCallback(() => {
-    clearResult();
+  const removeFile = useCallback(
+    (name: string) => {
+      clearResults();
+      setConv('idle');
+      setFiles((prev) => prev.filter((f) => f.name !== name));
+    },
+    [clearResults],
+  );
+
+  const clearFiles = useCallback(() => {
+    clearResults();
     setConv('idle');
-    setFileState(null);
-  }, [clearResult]);
+    setFiles([]);
+  }, [clearResults]);
 
   const convert = useCallback(() => {
-    if (!file || !src || !tgt) return;
+    if (files.length === 0 || !src || !tgt) return;
+    clearResults();
     setConv('running');
     setError(null);
-    try {
-      const { bytes, report } = remap(file.bytes, src, tgt, editsToOverrides(edits));
-      const url = URL.createObjectURL(new Blob([bytes], { type: 'audio/midi' }));
-      setResultState({ url, name: `${baseName(file.name)}-${tgt}.mid`, report });
-      setConv('done');
-    } catch (e) {
-      setError(String(e));
-      setConv('error');
+    const ov = editsToOverrides(edits);
+    const ok: FileResult[] = [];
+    const bad: FileFailure[] = [];
+    for (const f of files) {
+      try {
+        const { bytes, report } = remap(f.bytes, src, tgt, ov);
+        const url = URL.createObjectURL(new Blob([bytes], { type: 'audio/midi' }));
+        ok.push({ name: `${baseName(f.name)}-${tgt}.mid`, url, bytes, report });
+      } catch (e) {
+        bad.push({ name: f.name, error: String(e) });
+      }
     }
-  }, [edits, file, src, tgt]);
+    setResults(ok);
+    setFailures(bad);
+    if (bad.length > 0 && ok.length === 0) setError(bad[0].error);
+    setConv(ok.length > 0 ? 'done' : 'error');
+  }, [clearResults, edits, files, src, tgt]);
 
   const reset = useCallback(() => {
-    clearResult();
+    clearResults();
     setConv('idle');
-  }, [clearResult]);
+  }, [clearResults]);
 
   const openPick = useCallback(
     (canon: string) => {
@@ -180,6 +210,15 @@ export function useRemapper() {
     [pick],
   );
 
+  const chooseNoteAbsolute = useCallback(
+    (note: number) => {
+      if (!pick) return;
+      setEdits((e) => ({ ...e, [pick.canon]: note }));
+      setPick(null);
+    },
+    [pick],
+  );
+
   const closePick = useCallback(() => setPick(null), []);
 
   const remappedCount = useMemo(
@@ -187,18 +226,28 @@ export function useRemapper() {
     [rows, edits],
   );
   const droppedCount = useMemo(() => rows.filter((r) => r.status === 'dropped').length, [rows]);
+  const targetDrums = useMemo<Drum[]>(() => {
+    if (status !== 'ready' || !tgt) return [];
+    try {
+      return engineDrums(tgt);
+    } catch {
+      return [];
+    }
+  }, [status, tgt]);
 
   return {
     status,
     engines,
+    targetDrums,
     error,
     src,
     tgt,
     oct,
-    file,
+    files,
     view,
     conv,
-    result,
+    results,
+    failures,
     rows,
     edits,
     remappedCount,
@@ -208,8 +257,9 @@ export function useRemapper() {
     chooseTgt,
     swap,
     toggleOct,
-    setFile,
-    replaceFile,
+    addFiles,
+    removeFile,
+    clearFiles,
     setView,
     convert,
     reset,
@@ -217,6 +267,7 @@ export function useRemapper() {
     openPick,
     setPickOct,
     chooseNote,
+    chooseNoteAbsolute,
     closePick,
   };
 }

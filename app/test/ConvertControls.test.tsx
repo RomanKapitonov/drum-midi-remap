@@ -20,8 +20,8 @@ describe('ConvertButton', () => {
       <ConvertButton
         conv="idle"
         canConvert={false}
-        downloadUrl={null}
-        downloadName=""
+        results={[]}
+        targetShort=""
         summary=""
         onConvert={() => {}}
         onReset={() => {}}
@@ -36,8 +36,8 @@ describe('ConvertButton', () => {
       <ConvertButton
         conv="idle"
         canConvert
-        downloadUrl={null}
-        downloadName=""
+        results={[]}
+        targetShort=""
         summary=""
         onConvert={onConvert}
         onReset={() => {}}
@@ -47,20 +47,41 @@ describe('ConvertButton', () => {
     expect(onConvert).toHaveBeenCalledOnce();
   });
 
-  it('renders a download link when done', () => {
+  it('renders a single .mid link for one result', () => {
     render(
       <ConvertButton
         conv="done"
         canConvert
-        downloadUrl="blob:x"
-        downloadName="groove-ezdrummer.mid"
-        summary="3 remapped · 11 kept → ezdrummer"
+        results={[{ name: 'groove-ezd.mid', url: 'blob:x', bytes: new Uint8Array([1]) }]}
+        targetShort="EZD"
+        summary="1 file · 3 remapped → EZD"
         onConvert={() => {}}
         onReset={() => {}}
       />,
     );
     const link = screen.getByRole('link', { name: /download .mid/i });
     expect(link).toHaveAttribute('href', 'blob:x');
-    expect(link).toHaveAttribute('download', 'groove-ezdrummer.mid');
+    expect(link).toHaveAttribute('download', 'groove-ezd.mid');
+  });
+
+  it('renders a zip link for multiple results', () => {
+    render(
+      <ConvertButton
+        conv="done"
+        canConvert
+        results={[
+          { name: 'a.mid', url: 'blob:a', bytes: new Uint8Array([1]) },
+          { name: 'b.mid', url: 'blob:b', bytes: new Uint8Array([2]) },
+        ]}
+        targetShort="EZD"
+        summary="2 files · 6 remapped → EZD"
+        onConvert={() => {}}
+        onReset={() => {}}
+      />,
+    );
+    expect(screen.getByRole('link', { name: /download all \(\.zip\)/i })).toHaveAttribute(
+      'download',
+      'remapped-EZD.zip',
+    );
   });
 });

@@ -47,6 +47,30 @@ impl Encoder for EngineMap {
     }
 }
 
+pub struct Drum {
+    pub note: u8,
+    pub canon: Canon,
+    pub label: String,
+    pub family: &'static str,
+}
+
+impl EngineMap {
+    pub fn drums(&self) -> Vec<Drum> {
+        let mut out: Vec<Drum> = self
+            .from_canon
+            .iter()
+            .map(|(&canon, &note)| Drum {
+                note,
+                canon,
+                label: canon.label(),
+                family: canon.family(),
+            })
+            .collect();
+        out.sort_by_key(|d| d.note);
+        out
+    }
+}
+
 #[derive(thiserror::Error, Debug, PartialEq)]
 pub enum MapError {
     #[error("note {0} out of range 0..=127")]
@@ -126,6 +150,18 @@ mod tests {
         let m = from_toml(SAMPLE).unwrap();
         assert_eq!(m.encode(Canon::Kick(KickKind::Main)), Some(24));
         assert_eq!(m.encode(Canon::Snare(1, SnareArtic::Hit)), Some(26));
+    }
+
+    #[test]
+    fn drums_lists_encodable_pieces_sorted_by_note() {
+        let m = from_toml(SAMPLE).unwrap();
+        let d = m.drums();
+        assert_eq!(d.len(), 2);
+        assert_eq!(d[0].note, 24);
+        assert_eq!(d[0].label, "Kick");
+        assert_eq!(d[0].family, "Kick");
+        assert_eq!(d[1].note, 26);
+        assert_eq!(d[1].family, "Snare");
     }
 
     #[test]

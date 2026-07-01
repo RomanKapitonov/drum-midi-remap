@@ -79,6 +79,19 @@ describe('LibraryList', () => {
     expect(screen.getByRole('button', { name: 'EZdrummer' })).toBeInTheDocument();
   });
 
+  it('clears the filter on Escape while keeping focus', async () => {
+    render(
+      <LibraryList label="FROM" value="ggd_invasion" engines={engines} onChange={() => {}} {...noFav} />,
+    );
+    const input = screen.getByRole('textbox', { name: 'Filter FROM engines' }) as HTMLInputElement;
+    await userEvent.type(input, 'inv');
+    expect(screen.queryByRole('button', { name: 'EZdrummer' })).toBeNull();
+    await userEvent.keyboard('{Escape}');
+    expect(input.value).toBe('');
+    expect(input).toHaveFocus();
+    expect(screen.getByRole('button', { name: 'EZdrummer' })).toBeInTheDocument();
+  });
+
   it('does not change selection when filtering hides it', async () => {
     const onChange = vi.fn();
     render(

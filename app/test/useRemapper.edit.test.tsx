@@ -8,6 +8,9 @@ vi.mock('../src/lib/midiremap', () => ({
     { id: 'ggd_invasion', name: 'GGD Invasion' },
     { id: 'ezdrummer', name: 'EZdrummer' },
   ],
+  engineDrums: () => [
+    { note: 50, canon: 'tom.rack1.hit', label: 'Rack Tom 1', family: 'Toms' },
+  ],
   plan: (...a: unknown[]) => planMock(...a),
   remap: () => ({
     bytes: new Uint8Array([1]),
@@ -38,6 +41,18 @@ describe('useRemapper edit path', () => {
     expect(result.current.pick).toBeNull();
     expect(result.current.edits.KickMain).toBe(50);
     expect(result.current.remappedCount).toBe(1);
+  });
+
+  it('sets an absolute target note from the drum list', async () => {
+    const { result } = renderHook(() => useRemapper());
+    await waitFor(() => expect(result.current.status).toBe('ready'));
+    act(() => result.current.chooseSrc('ggd_invasion'));
+    act(() => result.current.chooseTgt('ezdrummer'));
+    expect(result.current.targetDrums).toHaveLength(1);
+    act(() => result.current.openPick('KickMain'));
+    act(() => result.current.chooseNoteAbsolute(50));
+    expect(result.current.pick).toBeNull();
+    expect(result.current.edits.KickMain).toBe(50);
   });
 
   it('clears edits when the target engine changes', async () => {

@@ -113,6 +113,13 @@ export function LibraryList({
           type="text"
           value={q}
           onChange={(e) => setQ(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Escape" && q) {
+              e.preventDefault();
+              e.stopPropagation();
+              setQ("");
+            }
+          }}
           aria-label={`Filter ${label} engines`}
           placeholder="filter…"
           className="

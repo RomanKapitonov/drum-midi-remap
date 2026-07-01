@@ -1,4 +1,4 @@
-import type { VoiceRow as VoiceRowData } from '../lib/midiremap';
+import type { Drum, VoiceRow as VoiceRowData } from '../lib/midiremap';
 import { noteName, type OctaveBase } from '../lib/notes';
 import { NotePicker } from './NotePicker';
 
@@ -6,21 +6,25 @@ export function VoiceRow({
   row,
   effectiveTgt,
   base,
+  drums,
   expanded,
   pickOctIndex,
   onOpen,
   onSetOct,
   onPick,
+  onPickDrum,
   onClose,
 }: {
   row: VoiceRowData;
   effectiveTgt: number | null;
   base: OctaveBase;
+  drums: Drum[];
   expanded: boolean;
   pickOctIndex: number;
   onOpen: () => void;
   onSetOct: (octIndex: number) => void;
   onPick: (semitone: number) => void;
+  onPickDrum: (note: number) => void;
   onClose: () => void;
 }) {
   const dropped = row.status === 'dropped' || effectiveTgt === null;
@@ -34,7 +38,9 @@ export function VoiceRow({
         grid grid-cols-[1fr_auto_16px_auto] items-center gap-3 py-2
       ">
         <span className="truncate text-[12.5px] text-t2">{row.label}</span>
-        <span className="justify-self-end font-mono text-[12px] text-t3">
+        <span className="
+          justify-self-end font-mono text-[12px] font-semibold text-t3
+        ">
           {noteName(row.srcNote, base)}
         </span>
         <span className="text-center text-t6">→</span>
@@ -47,7 +53,7 @@ export function VoiceRow({
             onClick={expanded ? onClose : onOpen}
             className={`
               justify-self-end rounded-md border px-2.25 py-0.75 font-mono
-              text-[12px] transition-colors
+              text-[12px] font-semibold transition-colors
               ${
               expanded
                 ? 'border-accent bg-accent/18 text-t1'
@@ -67,8 +73,10 @@ export function VoiceRow({
           currentNote={effectiveTgt}
           octIndex={pickOctIndex}
           base={base}
+          drums={drums}
           onSetOct={onSetOct}
           onPick={onPick}
+          onPickDrum={onPickDrum}
           onClose={onClose}
         />
       )}

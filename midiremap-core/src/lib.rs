@@ -11,7 +11,7 @@ pub mod translate;
 pub use canon::{Canon, DefaultFallbacks, FallbackResolver};
 pub use catalog::{BuiltinMaps, LayeredMaps, MapProvider};
 pub use conversion::{remap, remap_with_overrides, Conversion, ConversionError, Converted};
-pub use engine_map::{Decoder, Encoder, EngineMap, MapError};
+pub use engine_map::{Decoder, Drum, Encoder, EngineMap, MapError};
 pub use midi::{CodecError, EventRewriter, MidiCodec, StandardMidiCodec};
 pub use overrides::Overrides;
 pub use plan::{plan, PlanStatus, VoicePlan};

@@ -122,6 +122,33 @@ pub fn plan(
 }
 
 #[derive(Serialize)]
+struct DrumView {
+    note: u8,
+    canon: String,
+    label: String,
+    family: String,
+}
+
+#[wasm_bindgen]
+pub fn engine_drums(tgt_id: &str) -> Result<JsValue, JsValue> {
+    let provider = BuiltinMaps::new();
+    let tgt = provider
+        .get(tgt_id)
+        .ok_or_else(|| JsValue::from_str("unknown target engine"))?;
+    let drums: Vec<DrumView> = tgt
+        .drums()
+        .into_iter()
+        .map(|d| DrumView {
+            note: d.note,
+            canon: d.canon.to_string(),
+            label: d.label,
+            family: d.family.to_string(),
+        })
+        .collect();
+    serde_wasm_bindgen::to_value(&drums).map_err(|e| JsValue::from_str(&e.to_string()))
+}
+
+#[derive(Serialize)]
 struct EngineInfo {
     id: String,
     name: String,

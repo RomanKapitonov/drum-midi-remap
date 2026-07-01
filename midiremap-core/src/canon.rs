@@ -581,6 +581,19 @@ impl Canon {
             .into(),
         }
     }
+
+    pub fn family(self) -> &'static str {
+        match self {
+            Canon::Kick(_) => "Kick",
+            Canon::Snare(..) => "Snare",
+            Canon::Tom(..) => "Toms",
+            Canon::Hat(..) => "Hi-Hat",
+            Canon::Aux(..) => "Aux",
+            Canon::Cymbal(..) => "Cymbals",
+            Canon::Ride(..) => "Cymbals",
+            Canon::Perc(_) => "Percussion",
+        }
+    }
 }
 
 /// Resolves the ordered, nearest-first list of alternative canonical slots to
@@ -832,6 +845,19 @@ mod tests {
             "Hi-Hat Open 1"
         );
         assert_eq!(Canon::Snare(1, SnareArtic::Sidestick).label(), "Side Stick");
+    }
+
+    #[test]
+    fn every_variant_has_a_nonempty_family() {
+        for c in Canon::all() {
+            assert!(!c.family().is_empty(), "{c:?} has empty family");
+        }
+        assert_eq!(Canon::Ride(1, RideArtic::Bow).family(), "Cymbals");
+        assert_eq!(
+            Canon::Aux(1, HatOpen::Closed, HatZone::Plain).family(),
+            "Aux"
+        );
+        assert_eq!(Canon::Tom(TomPos::Rack(1), TomArtic::Hit).family(), "Toms");
     }
 
     fn k(s: &str) -> Canon {

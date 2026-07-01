@@ -39,29 +39,64 @@ describe('useRemapper convert path', () => {
     expect(planMock).not.toHaveBeenCalled();
   });
 
-  it('converts a loaded file to a download once both engines are chosen', async () => {
+  it('converts queued files to results once both engines are chosen', async () => {
     const { result } = renderHook(() => useRemapper());
     await waitFor(() => expect(result.current.status).toBe('ready'));
     act(() => result.current.chooseSrc('ggd_invasion'));
     act(() => result.current.chooseTgt('ezdrummer'));
-    act(() => result.current.setFile({ bytes: new Uint8Array([9]), name: 'groove.mid' }));
+    act(() =>
+      result.current.addFiles([
+        { bytes: new Uint8Array([9]), name: 'groove.mid' },
+        { bytes: new Uint8Array([9]), name: 'fill.mid' },
+      ]),
+    );
     act(() => result.current.convert());
     await waitFor(() => expect(result.current.conv).toBe('done'));
-    expect(result.current.result?.name).toBe('groove-ezdrummer.mid');
-    expect(result.current.result?.url).toBe('blob:mock-url');
+    expect(result.current.results.map((r) => r.name)).toEqual([
+      'groove-ezdrummer.mid',
+      'fill-ezdrummer.mid',
+    ]);
+    expect(result.current.results[0].url).toBe('blob:mock-url');
   });
 
   it('does not convert until both engines are chosen', async () => {
     const { result } = renderHook(() => useRemapper());
     await waitFor(() => expect(result.current.status).toBe('ready'));
     act(() => result.current.chooseSrc('ggd_invasion'));
-    act(() => result.current.setFile({ bytes: new Uint8Array([9]), name: 'groove.mid' }));
+    act(() => result.current.addFiles([{ bytes: new Uint8Array([9]), name: 'groove.mid' }]));
     act(() => result.current.convert());
     expect(result.current.conv).toBe('idle');
+    expect(result.current.results).toHaveLength(0);
     expect(remapMock).not.toHaveBeenCalled();
   });
 
-  it('captures a conversion error', async () => {
+  it('marks a failing file while others still convert', async () => {
+    remapMock.mockImplementation((bytes: Uint8Array) => {
+      if (bytes[0] === 0) throw new Error('unknown source engine');
+      return {
+        bytes: new Uint8Array([1, 2, 3]),
+        report: { unmapped_source: {}, fallback_used: {}, dropped: {} },
+      };
+    });
+    const { result } = renderHook(() => useRemapper());
+    await waitFor(() => expect(result.current.status).toBe('ready'));
+    act(() => result.current.chooseSrc('ggd_invasion'));
+    act(() => result.current.chooseTgt('ezdrummer'));
+    act(() =>
+      result.current.addFiles([
+        { bytes: new Uint8Array([9]), name: 'ok.mid' },
+        { bytes: new Uint8Array([0]), name: 'bad.mid' },
+      ]),
+    );
+    act(() => result.current.convert());
+    await waitFor(() => expect(result.current.conv).toBe('done'));
+    expect(result.current.results.map((r) => r.name)).toEqual(['ok-ezdrummer.mid']);
+    expect(result.current.failures).toEqual([
+      { name: 'bad.mid', error: 'Error: unknown source engine' },
+    ]);
+  });
+
+  it('reports error when every file fails', async () => {
     remapMock.mockImplementation(() => {
       throw new Error('unknown source engine');
     });
@@ -69,10 +104,21 @@ describe('useRemapper convert path', () => {
     await waitFor(() => expect(result.current.status).toBe('ready'));
     act(() => result.current.chooseSrc('ggd_invasion'));
     act(() => result.current.chooseTgt('ezdrummer'));
-    act(() => result.current.setFile({ bytes: new Uint8Array([9]), name: 'g.mid' }));
+    act(() => result.current.addFiles([{ bytes: new Uint8Array([9]), name: 'g.mid' }]));
     act(() => result.current.convert());
     await waitFor(() => expect(result.current.conv).toBe('error'));
+    expect(result.current.failures).toHaveLength(1);
     expect(result.current.error).toContain('unknown source engine');
+  });
+
+  it('dedupes by name and removes files', async () => {
+    const { result } = renderHook(() => useRemapper());
+    await waitFor(() => expect(result.current.status).toBe('ready'));
+    act(() => result.current.addFiles([{ bytes: new Uint8Array([1]), name: 'a.mid' }]));
+    act(() => result.current.addFiles([{ bytes: new Uint8Array([2]), name: 'a.mid' }]));
+    expect(result.current.files).toHaveLength(1);
+    act(() => result.current.removeFile('a.mid'));
+    expect(result.current.files).toHaveLength(0);
   });
 
   it('swaps and recomputes plan', async () => {
