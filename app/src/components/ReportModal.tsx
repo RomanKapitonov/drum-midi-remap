@@ -27,7 +27,7 @@ const CONTACT_LINK = `
 
 function ContactFooter() {
   return (
-    <p className="border-t border-hairline pt-4 text-[12px] text-t5">
+    <p className="border-t border-hairline pt-4 text-[14px] text-t5">
       Wrong mapping or missing engine? Open a{' '}
       <a
         href="https://github.com/nullcrimson/remidi/issues"
@@ -66,7 +66,7 @@ function Group({
   return (
     <div className="flex flex-col gap-1">
       <div className={`
-        font-mono text-[10px] tracking-[0.12em] uppercase
+        font-mono text-[12px] tracking-[0.12em] uppercase
         ${color}
       `}
       >
@@ -128,7 +128,7 @@ export function ReportModal({
                   >
                     {lossyFiles.map((f) => (
                       <div key={f.name} className="flex flex-col gap-2">
-                        <div className="font-mono text-[11px] text-t2">{f.name}</div>
+                        <div className="font-mono text-[13px] text-t2">{f.name}</div>
                         <GroupList groups={f.groups} />
                       </div>
                     ))}

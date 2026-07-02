@@ -14,7 +14,7 @@ export function FilterInput({
       <span
         className="
           pointer-events-none absolute top-1/2 left-2 -translate-y-1/2
-          text-[11px] text-t5
+          text-[13px] text-t5
         "
       >
         ⌕
@@ -34,7 +34,7 @@ export function FilterInput({
         placeholder={placeholder}
         className="
           w-full rounded-md border border-field-border bg-field py-1.25 pr-6
-          pl-6.5 font-mono text-[11px] text-t2 transition-colors outline-none
+          pl-6.5 font-mono text-[13px] text-t2 transition-colors outline-none
           placeholder:text-t5
           focus:border-accent/40
         "
@@ -45,7 +45,7 @@ export function FilterInput({
           aria-label="Clear filter"
           onClick={() => onChange('')}
           className="
-            absolute top-1/2 right-1.5 -translate-y-1/2 text-[12px] text-t5
+            absolute top-1/2 right-1.5 -translate-y-1/2 text-[14px] text-t5
             hover:text-t2
           "
         >

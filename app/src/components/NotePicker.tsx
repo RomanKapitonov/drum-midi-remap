@@ -45,7 +45,7 @@ export function NotePicker({
           <span className="font-mono text-[9.5px] tracking-[0.12em] text-t4">
             TARGET · {voiceLabel}
           </span>
-          <span className="font-mono text-[15px] font-bold text-accent">
+          <span className="font-mono text-[17px] font-bold text-accent">
             {noteName(currentNote, base)}
           </span>
         </div>
@@ -55,7 +55,7 @@ export function NotePicker({
           onClick={onClose}
           className="
             flex size-5 items-center justify-center rounded-[5px] bg-white/5
-            text-[14px] text-t4
+            text-[16px] text-t4
           "
         >
           ×

@@ -18,7 +18,7 @@ import { shortCode } from '../lib/format';
 
 const ICON_BTN = `
   flex w-6 shrink-0 items-center justify-center border-l border-hairline
-  text-[11px] text-t5 transition-colors
+  text-[13px] text-t5 transition-colors
 `;
 
 export function SavedMappingChip({
@@ -103,7 +103,7 @@ export function SavedMappingChip({
             }}
             className="
               w-32 min-w-0 rounded-md border border-field-border bg-field px-2
-              py-1.25 font-mono text-[11px] text-t2 transition-colors
+              py-1.25 font-mono text-[13px] text-t2 transition-colors
               outline-none
               focus:border-accent/40
             "
@@ -114,7 +114,7 @@ export function SavedMappingChip({
             onClick={commitRename}
             className="
               flex size-6 shrink-0 items-center justify-center rounded-md
-              text-[12px] text-star
+              text-[14px] text-star
               hover:bg-white/5
             "
           >
@@ -126,7 +126,7 @@ export function SavedMappingChip({
             onClick={() => setRenaming(false)}
             className="
               flex size-6 shrink-0 items-center justify-center rounded-md
-              text-[12px] text-t5
+              text-[14px] text-t5
               hover:bg-white/5 hover:text-t2
             "
           >
@@ -150,13 +150,13 @@ export function SavedMappingChip({
         title={known ? `${overrideCount} overrides` : 'engine unavailable'}
         className="
           flex min-w-0 items-center gap-2 py-1.5 pr-2 pl-2.5 text-left
-          text-[12px]
+          text-[14px]
           enabled:hover:bg-white/3
           disabled:opacity-40
         "
       >
         <span className="max-w-40 truncate text-t2">{mapping.name}</span>
-        <span className="shrink-0 font-mono text-[10px] text-t5">
+        <span className="shrink-0 font-mono text-[12px] text-t5">
           {shortCode(mapping.src)}→{shortCode(mapping.tgt)}
         </span>
       </button>
@@ -222,8 +222,8 @@ export function SavedMappingChip({
                       },
                     })}
                     className={`
-                      flex w-full items-center rounded-[6px] px-2.5 py-1.5
-                      text-left text-[12px] transition-colors
+                      flex w-full items-center rounded-md px-2.5 py-1.5
+                      text-left text-[14px] transition-colors
                       disabled:opacity-40
                       ${it.danger
                   ? `

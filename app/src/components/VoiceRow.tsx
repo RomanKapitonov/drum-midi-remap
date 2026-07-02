@@ -4,7 +4,7 @@ import { useDismiss } from '../hooks/useDismiss';
 import { noteName, type OctaveBase } from '../lib/notes';
 
 const CHIP = `
-  justify-self-end rounded-md border px-2.25 py-0.75 font-mono text-[12px]
+  justify-self-end rounded-md border px-2.25 py-0.75 font-mono text-[14px]
   font-semibold transition
   hover:shadow-[0_0_12px_-2px_rgba(199,192,173,0.45)]
 `;

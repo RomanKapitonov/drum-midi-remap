@@ -58,7 +58,7 @@ export function Modal({
         "
         >
           <h2 className="
-            font-display text-[15px] font-semibold tracking-[0.01em] text-t1
+            font-display text-[17px] font-semibold tracking-[0.01em] text-t1
           "
           >
             {heading}
@@ -69,7 +69,7 @@ export function Modal({
             onClick={onClose}
             className="
               flex size-7 items-center justify-center rounded-[7px] bg-white/5
-              text-[16px] text-t4 transition-colors
+              text-[18px] text-t4 transition-colors
               hover:bg-white/10 hover:text-t2
             "
           >
@@ -77,7 +77,7 @@ export function Modal({
           </button>
         </div>
         <div className="
-          mr-scroll overflow-y-auto px-6 py-5 text-[13px] leading-relaxed
+          mr-scroll overflow-y-auto px-6 py-5 text-[15px] leading-relaxed
           text-t4
         "
         >

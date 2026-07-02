@@ -30,7 +30,7 @@ export function SavedMappingChips({
       aria-label="Saved mappings"
       className="flex flex-col gap-2"
     >
-      <span className="font-mono text-[10px] tracking-[0.14em] text-t5">
+      <span className="font-mono text-[12px] tracking-[0.14em] text-t5">
         SAVED
       </span>
       <ul className="flex flex-wrap gap-2">

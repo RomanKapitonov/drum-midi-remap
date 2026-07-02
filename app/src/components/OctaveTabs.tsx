@@ -19,7 +19,7 @@ export function OctaveTabs({
           type="button"
           onClick={() => onChange(o)}
           className={`
-            rounded-md border px-2.75 py-1.25 font-mono text-[11px]
+            rounded-md border px-2.75 py-1.25 font-mono text-[13px]
             font-semibold
             ${o === value
           ? 'border-accent bg-accent/15 text-t1'

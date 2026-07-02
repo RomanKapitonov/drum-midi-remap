@@ -44,15 +44,15 @@ function Header() {
       <div className="flex items-baseline gap-2">
         <h1
           className="
-            font-display text-[15px] font-semibold tracking-[0.02em] text-t2
+            font-display text-[17px] font-semibold tracking-[0.02em] text-t2
             [text-shadow:0_0_12px_rgba(236,232,224,0.3)]
           "
         >
           Remidi
         </h1>
-        <span className="text-[12px] text-t5">— any kit, any engine</span>
+        <span className="text-[14px] text-t5">— any kit, any engine</span>
       </div>
-      <span className="font-mono text-[11px] text-t6">free in-browser converter</span>
+      <span className="font-mono text-[13px] text-t6">free in-browser converter</span>
     </div>
   );
 }
@@ -112,11 +112,11 @@ export default function App() {
             <Header />
 
             {c.status === 'loading' && (
-              <p className="text-[13px] text-t3">Loading converter…</p>
+              <p className="text-[15px] text-t3">Loading converter…</p>
             )}
 
             {c.status === 'error' && (
-              <p className="text-[13px] text-danger">Failed to load converter: {c.error}</p>
+              <p className="text-[15px] text-danger">Failed to load converter: {c.error}</p>
             )}
 
             {c.status === 'ready' && (
@@ -192,7 +192,7 @@ export default function App() {
 
                 {c.conv.kind === 'error' && c.error && (
                   <p className="
-                    rounded-sm bg-danger/10 p-3 text-[12px] text-danger
+                    rounded-sm bg-danger/10 p-3 text-[14px] text-danger
                   "
                   >
                     Error: {c.error}

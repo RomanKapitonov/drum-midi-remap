@@ -75,7 +75,7 @@ function SavePreset({
           onClick={open}
           disabled={!canSave}
           className="
-            text-[12px] text-t4 transition-colors
+            text-[14px] text-t4 transition-colors
             enabled:hover:text-accent
             disabled:opacity-40
           "
@@ -104,7 +104,7 @@ function SavePreset({
           }}
           className="
             min-w-0 flex-1 rounded-[7px] border border-field-border bg-field
-            px-2.5 py-1.5 text-[13px] text-t1 outline-none
+            px-2.5 py-1.5 text-[15px] text-t1 outline-none
           "
         />
         {existingPreset
@@ -115,7 +115,7 @@ function SavePreset({
                   onClick={saveUpdate}
                   disabled={!trimmed}
                   className="
-                    rounded-[7px] bg-accent px-3 py-1.5 text-[12px]
+                    rounded-[7px] bg-accent px-3 py-1.5 text-[14px]
                     font-semibold text-ink transition
                     enabled:hover:brightness-110
                     disabled:opacity-40
@@ -129,7 +129,7 @@ function SavePreset({
                   disabled={!trimmed || atCap}
                   className="
                     rounded-[7px] border border-field-border px-3 py-1.5
-                    text-[12px] text-t3 transition-colors
+                    text-[14px] text-t3 transition-colors
                     enabled:hover:text-t1
                     disabled:opacity-40
                   "
@@ -144,7 +144,7 @@ function SavePreset({
                 onClick={saveNew}
                 disabled={!trimmed || atCap}
                 className="
-                  rounded-[7px] bg-accent px-3 py-1.5 text-[12px] font-semibold
+                  rounded-[7px] bg-accent px-3 py-1.5 text-[14px] font-semibold
                   text-ink transition
                   enabled:hover:brightness-110
                   disabled:opacity-40
@@ -159,7 +159,7 @@ function SavePreset({
           onClick={() => setNaming(false)}
           className="
             flex size-6 items-center justify-center rounded-md bg-white/5
-            text-[14px] text-t4
+            text-[16px] text-t4
             hover:text-t2
           "
         >
@@ -167,12 +167,12 @@ function SavePreset({
         </button>
       </div>
       {existingPreset && (
-        <p className="text-[11px] text-t5">
+        <p className="text-[13px] text-t5">
           A preset for {pairLabel} already exists.
         </p>
       )}
       {atCap && !existingPreset && (
-        <p className="text-[11px] text-danger">
+        <p className="text-[13px] text-danger">
           Preset limit reached ({MAPPINGS_CAP}).
         </p>
       )}
@@ -222,17 +222,17 @@ export function EditView({
             type="button"
             onClick={() => setView('convert')}
             className="
-              text-[12px] text-t4
+              text-[14px] text-t4
               hover:text-accent
             "
           >
             ← back
           </button>
-          <span className="text-[14px] font-semibold text-t1">
+          <span className="text-[16px] font-semibold text-t1">
             Edit mapping
           </span>
         </div>
-        <span className="font-mono text-[11px] text-t4">
+        <span className="font-mono text-[13px] text-t4">
           {shortCode(src)} → {shortCode(tgt)}
         </span>
       </div>
@@ -313,7 +313,7 @@ export function EditView({
           onClick={() => setAdvanced((v) => !v)}
           aria-expanded={advanced}
           className="
-            self-start text-[11px] text-t5 transition-colors
+            self-start text-[13px] text-t5 transition-colors
             hover:text-t3
           "
         >
@@ -332,7 +332,7 @@ export function EditView({
       </div>
 
       <div className="flex items-center justify-between gap-3 pt-0.5">
-        <span className="font-mono text-[11px] text-t5">
+        <span className="font-mono text-[13px] text-t5">
           <span className="text-accent">●</span> = remapped
         </span>
         <div className="flex items-center gap-3">

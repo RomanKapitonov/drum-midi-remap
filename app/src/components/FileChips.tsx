@@ -20,7 +20,7 @@ export function FileChips({
       <FilePicker onFiles={onFiles}>
         <div className="flex items-center gap-3 border-b border-hairline pb-4.5">
           <MidBadge />
-          <span className="flex-1 text-[14px] text-t4">
+          <span className="flex-1 text-[16px] text-t4">
             Drop a .mid anywhere, or click to choose
           </span>
         </div>
@@ -53,14 +53,14 @@ export function FileChips({
           >
             <MidBadge />
             <span className="h-3.5 w-px shrink-0 bg-white/12" />
-            <span className="min-w-0 truncate text-[12px] text-t1">{f.name}</span>
+            <span className="min-w-0 truncate text-[14px] text-t1">{f.name}</span>
             <button
               type="button"
               aria-label={`Remove ${f.name}`}
               onClick={() => onRemove(f.name)}
               className="
                 flex size-4 shrink-0 items-center justify-center rounded-full
-                text-[12px] leading-none text-t5
+                text-[14px] leading-none text-t5
                 hover:bg-white/8 hover:text-danger
               "
             >
@@ -72,7 +72,7 @@ export function FileChips({
       <div className="flex w-full items-center justify-between pt-0.5">
         <FilePicker onFiles={onFiles} fullWidth={false}>
           <span className="
-            text-[11px] text-t5
+            text-[13px] text-t5
             hover:text-accent
           "
           >
@@ -83,7 +83,7 @@ export function FileChips({
           type="button"
           onClick={onClear}
           className="
-            text-[11px] text-danger/60 transition-colors
+            text-[13px] text-danger/60 transition-colors
             hover:text-danger
           "
         >

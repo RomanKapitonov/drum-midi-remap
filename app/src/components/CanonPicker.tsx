@@ -45,7 +45,7 @@ export function CanonPicker({
           onClick={onClose}
           className="
             flex size-5 items-center justify-center rounded-[5px] bg-white/5
-            text-[14px] text-t4
+            text-[16px] text-t4
           "
         >
           ×
@@ -62,11 +62,11 @@ export function CanonPicker({
                 onSelect={() => onPick(o.canon)}
                 className="
                   flex w-full items-center justify-between py-1 pr-2 pl-2.5
-                  text-[12px] leading-tight
+                  text-[14px] leading-tight
                 "
               >
                 <span className="min-w-0 truncate">{o.label}</span>
-                <span className="ml-2 shrink-0 font-mono text-[10px] text-t6">{o.canon}</span>
+                <span className="ml-2 shrink-0 font-mono text-[12px] text-t6">{o.canon}</span>
               </ListRow>
             ))}
           </div>

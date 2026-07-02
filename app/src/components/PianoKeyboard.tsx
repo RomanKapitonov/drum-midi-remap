@@ -42,7 +42,7 @@ export function PianoKeyboard({
             onClick={() => onPickSemitone(w.s)}
             className={`
               flex h-21.5 flex-1 items-end justify-center rounded-b-[5px] border
-              border-t-0 border-keyborder pb-1.75 font-mono text-[10px] text-ink
+              border-t-0 border-keyborder pb-1.75 font-mono text-[12px] text-ink
               transition
               ${
           active

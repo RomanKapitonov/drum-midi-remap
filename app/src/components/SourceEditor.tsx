@@ -46,10 +46,10 @@ function SourceEditorRow({
           aria-haspopup="dialog"
           aria-expanded={open}
           className="
-            flex min-w-0 flex-1 items-center gap-3 text-left text-[12px]
+            flex min-w-0 flex-1 items-center gap-3 text-left text-[14px]
           "
         >
-          <span className="w-10 shrink-0 font-mono text-[11px] text-t4">
+          <span className="w-10 shrink-0 font-mono text-[13px] text-t4">
             {noteName(note, base)}
           </span>
           <span
@@ -70,7 +70,7 @@ function SourceEditorRow({
             aria-label={`Clear source note ${noteName(note, base)}`}
             onClick={() => onClear(note)}
             className="
-              shrink-0 rounded-[5px] px-1.5 text-[13px] text-t5
+              shrink-0 rounded-[5px] px-1.5 text-[15px] text-t5
               hover:text-danger
             "
           >
@@ -174,7 +174,7 @@ export function SourceEditor({
           placeholder="add note 0–127"
           className="
             w-32 rounded-md border border-field-border bg-field px-2 py-1.25
-            font-mono text-[11px] text-t2 transition-colors outline-none
+            font-mono text-[13px] text-t2 transition-colors outline-none
             placeholder:text-t5
             focus:border-accent/40
           "
@@ -183,7 +183,7 @@ export function SourceEditor({
           type="button"
           onClick={addNote}
           className="
-            rounded-md border border-field-border px-2.5 py-1.25 text-[11px]
+            rounded-md border border-field-border px-2.5 py-1.25 text-[13px]
             text-t3 transition-colors
             hover:text-t1
           "

@@ -117,7 +117,7 @@ function FaqBody() {
     <div className="flex flex-col gap-4">
       {FAQ.map((item) => (
         <div key={item.q} className="flex flex-col gap-1">
-          <h3 className="text-[13px] font-semibold text-t2">{item.q}</h3>
+          <h3 className="text-[15px] font-semibold text-t2">{item.q}</h3>
           <p>{item.a}</p>
         </div>
       ))}
@@ -274,7 +274,7 @@ export function AboutContent() {
   return (
     <section className="flex w-full flex-col px-1">
       <div className="
-        flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[12px]
+        flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[14px]
       "
       >
         {SECTIONS.map((s, i) => (

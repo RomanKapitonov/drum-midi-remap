@@ -42,7 +42,7 @@ export function OctaveToggle({
           type="button"
           onClick={onToggle}
           className="
-            ml-auto text-[11px] whitespace-nowrap text-t5
+            ml-auto text-[13px] whitespace-nowrap text-t5
             hover:text-accent
           "
         >

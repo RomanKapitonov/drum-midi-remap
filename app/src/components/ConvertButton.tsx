@@ -44,7 +44,11 @@ export function ConvertButton({
             <a
               href={href}
               download={name}
-              className="text-[13.5px] font-semibold text-t1"
+              className="
+                text-[13.5px] font-semibold text-t1 transition
+                hover:text-star
+                hover:[text-shadow:0_0_14px_rgba(224,196,106,0.6)]
+              "
             >
               {single ? '↓ download .mid' : '↓ download all (.zip)'}
             </a>
@@ -52,20 +56,20 @@ export function ConvertButton({
               type="button"
               onClick={onViewReport}
               className="
-                text-[12px] text-t4 transition-colors
+                text-[14px] text-t4 transition-colors
                 hover:text-accent
               "
             >
               View report →
             </button>
           </div>
-          <span className="font-mono text-[11px] text-t4">{summary}</span>
+          <span className="font-mono text-[13px] text-t4">{summary}</span>
         </div>
         <button
           type="button"
           onClick={onReset}
           className="
-            text-[12px] text-t4
+            text-[14px] text-t4
             hover:text-t1
           "
         >
@@ -78,7 +82,7 @@ export function ConvertButton({
     return (
       <div>
         <div className="
-          mb-2.25 flex justify-between font-mono text-[11px] text-t4
+          mb-2.25 flex justify-between font-mono text-[13px] text-t4
         "
         >
           <span>remapping</span>
