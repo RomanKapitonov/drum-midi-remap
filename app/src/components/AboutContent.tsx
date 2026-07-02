@@ -189,7 +189,36 @@ function ContactBody() {
   );
 }
 
-type SectionKey = 'guide' | 'engines' | 'faq' | 'issue' | 'contact';
+function TermsBody() {
+  return (
+    <div className="flex flex-col gap-3">
+      <p>
+        Remidi is a free tool provided “as is” and “as available”, without warranties of any
+        kind. The author makes no guarantee that it is accurate, error-free, or uninterrupted.
+      </p>
+      <p>
+        Drum mappings and fallbacks are best-effort. Converted files may be incomplete or
+        incorrect. You are responsible for reviewing the output and keeping backups of your
+        original files before using them.
+      </p>
+      <p>
+        To the maximum extent permitted by law, the author is not liable for any damages or
+        data loss arising from use of, or inability to use, Remidi.
+      </p>
+      <p>
+        All engine and product names are trademarks of their respective owners. Remidi is
+        independent and not affiliated with, endorsed by, or sponsored by any of them; names
+        are used only to identify layout compatibility.
+      </p>
+      <p>
+        Conversion runs entirely in your browser — files are not uploaded or stored. Remidi may
+        change or shut down at any time. Using it means you accept these terms.
+      </p>
+    </div>
+  );
+}
+
+type SectionKey = 'guide' | 'engines' | 'faq' | 'issue' | 'contact' | 'terms';
 
 const SECTIONS: {
   key: SectionKey;
@@ -226,6 +255,12 @@ const SECTIONS: {
     label: 'Contact',
     heading: 'Contact',
     body: <ContactBody />,
+  },
+  {
+    key: 'terms',
+    label: 'Terms',
+    heading: 'Terms of use',
+    body: <TermsBody />,
   },
 ];
 

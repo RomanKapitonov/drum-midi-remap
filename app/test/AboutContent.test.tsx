@@ -11,6 +11,14 @@ describe('AboutContent', () => {
     expect(screen.getByRole('button', { name: 'FAQ' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Submit an issue' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Contact' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Terms' })).toBeInTheDocument();
+  });
+
+  it('opens a terms dialog disclaiming warranty and liability', async () => {
+    render(<AboutContent />);
+    await userEvent.click(screen.getByRole('button', { name: 'Terms' }));
+    expect(screen.getByRole('dialog', { name: 'Terms of use' })).toBeVisible();
+    expect(screen.getByText(/not liable for any damages or data loss/i)).toBeVisible();
   });
 
   it('opens a contact dialog with a mailto link', async () => {
